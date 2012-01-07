@@ -35,11 +35,18 @@ import "components"
 
 PageStack {
     id: folderStack
+    property string title : qsTr("Recordings")
+
+    ErrorPage{
+        id: errorPage
+        subtitle: folderStack.title
+    }
+
     Track4Page {
         id: foldersPage
         Track4TitleBar{
             id:titleBar
-            subtitle: qsTr("Recordings")
+            subtitle: folderStack.title
         }
 
         Rectangle{
@@ -209,6 +216,21 @@ PageStack {
             menuenabler.toShow = navigationBar
             menuenabler.toHide = folderMenu
             menuenabler.start()
+        }
+    }
+    Connections {
+        target: track4Engine
+        onErrorFolders: {
+            errorPage.errorMsg = track4Engine.lastErrorMessage()
+            push(errorPage);
+        }
+    }
+    Connections {
+        target: errorPage
+        onRetry: {
+            track4Engine.getFolderList()
+            titleBar.startBusyIndicator()
+            pop()
         }
     }
     Component.onCompleted: {

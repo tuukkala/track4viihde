@@ -81,8 +81,6 @@ public:
     Q_INVOKABLE void removeProgram(const QString& programViewId);
     Q_INVOKABLE void playVideo(const QString& streamUrl);
 
-
-
     ProgramListModel* epgModel();
     RecordingListModel* recordingModel();
     RecordingListModel* topTenModel();
@@ -96,11 +94,15 @@ public:
     void newEpgDate(QString date);
 
 signals:
+    void errorEpg();
+    void errorRecordings();
+    void errorFolders();
+    void error();
+
     void userLogged();
     void loginFailed();    
     void epgReady();
     void recordingsReady();
-    void error();
     void epgDateChanged();
     void recordedShowReady();
     void programDetailsReady();

@@ -143,7 +143,7 @@ Window {
             Track4TitleBar{subtitle: qsTr("Settings")}
             Label{
                 anchors.centerIn: parent
-                text: "Track4Viihde 0.0.3"
+                text: "Track4Viihde 0.0.4"
             }
         }
     }  

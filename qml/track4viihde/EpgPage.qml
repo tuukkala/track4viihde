@@ -37,6 +37,12 @@ import "components"
 PageStack {
     id: epgStack
     objectName: "epgStack"
+    property string title : qsTr("Week's programs")
+
+    ErrorPage{
+        id: errorPage
+        subtitle: epgStack.title
+    }
 
     Track4Page {
         objectName: "epgpage"
@@ -45,7 +51,7 @@ PageStack {
 
         Track4TitleBar{
             id: titleBar
-            subtitle: qsTr("Week's programs")
+            subtitle: epgStack.title
         }
         Rectangle{
             id: navigationBar
@@ -318,13 +324,30 @@ PageStack {
             onEpgDateChanged: {
                 currentDate.text = track4Engine.getEpgDate();
             }
+        }        
+    }
+
+    Connections {
+        target: track4Engine
+        onErrorEpg: {
+            errorPage.errorMsg = track4Engine.lastErrorMessage()
+            push(errorPage);
         }
-        Component.onCompleted: {
-            push(epgPage);
-            if(track4Engine.isEpgReady() === false){
-                navigationBar.visible = false
-                titleBar.startBusyIndicator()
-            }
+    }
+    Connections {
+        target: errorPage
+        onRetry: {
+            track4Engine.getEpg()
+            navigationBar.visible = false
+            titleBar.startBusyIndicator()
+            pop()
+        }
+    }
+    Component.onCompleted: {
+        push(epgPage);
+        if(track4Engine.isEpgReady() === false){
+            navigationBar.visible = false
+            titleBar.startBusyIndicator()
         }
     }
 }

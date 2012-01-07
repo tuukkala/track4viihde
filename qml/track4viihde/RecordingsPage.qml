@@ -35,11 +35,19 @@ import "components"
 
 PageStack {
     id: recStack
+
+    property string title : qsTr("Next Recordings")
+
+    ErrorPage{
+        id: errorPage
+        subtitle: recStack.title
+    }
+
     Track4Page {
         id: recordingsPage
         Track4TitleBar{
             id:titleBar
-            subtitle: qsTr("Next Recordings")
+            subtitle: recStack.title
         }
 
         ListView {
@@ -83,6 +91,23 @@ PageStack {
             }
         }
     }
+    Connections {
+        target: track4Engine
+        onErrorRecordings: {
+            errorPage.errorMsg = track4Engine.lastErrorMessage()
+            push(errorPage);
+        }
+    }
+    Connections {
+        target: errorPage
+        onRetry: {
+            track4Engine.getRecordings()
+            titleBar.startBusyIndicator()
+            pop()
+        }
+    }
+
+
     Component.onCompleted: {
         push(recordingsPage);
         titleBar.startBusyIndicator()

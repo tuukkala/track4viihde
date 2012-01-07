@@ -78,7 +78,9 @@ public:
     QString toString();    
     void insertValue(QString key, QString value);
     QString getValue(QString key, QString defaultValue);
-    
+
+    QDateTime parseTime(QString time);
+
 private:
     QHash<QString, QString> mContent;
 

@@ -50,7 +50,7 @@ Track4ViihdeEngine* Track4ViihdeEngine::instance()
     if(mInstance == 0){
         mInstance = new Track4ViihdeEngine();
         qDebug() << "Engine created";
-    }    
+    }        
     return mInstance;
 }
 
@@ -61,7 +61,7 @@ Track4ViihdeEngine::~Track4ViihdeEngine()
 
 
 Track4ViihdeEngine::Track4ViihdeEngine()
-{
+{    
     mUserLogged = false;
     mLogginInProgress = false;
     mCurrentChannel = 0;
@@ -100,6 +100,7 @@ void Track4ViihdeEngine::storeLoginDetails()
     QSettings userSettings;
     userSettings.setValue(USER_KEY,eUserName);
     userSettings.setValue(PASS_KEY,ePassword);
+    userSettings.sync();
 }
 
 bool Track4ViihdeEngine::loadLoginCredentials()
@@ -289,7 +290,7 @@ void Track4ViihdeEngine::folderListing(QPair<QList<Folder>, QList<Recording> > f
     else{
         mErrorMessage = tr(NETWORK_ERROR);
         qDebug("Folderlist err");
-        emit error();
+        emit errorFolders();
     }
 }
 
@@ -389,12 +390,12 @@ void Track4ViihdeEngine::fillEpgModel(const QString& channel)
 
 void Track4ViihdeEngine::epgDone(QHash<QString,QList<Program> > epg, bool networkError)
 {    
-    if(!networkError){        
+    if(!networkError){
         mEpg = epg;
         if(mEpg.isEmpty()){
            mErrorMessage = tr(NETWORK_ERROR);
            qDebug("Epg empty");
-           emit error();
+           emit errorEpg();
         }
         else{
             setRecordedPrograms();
@@ -412,10 +413,10 @@ void Track4ViihdeEngine::epgDone(QHash<QString,QList<Program> > epg, bool networ
             }
         }
     }
-    else{
+    else{        
         mErrorMessage = tr(NETWORK_ERROR);
         qDebug("Epg error");
-        emit error();
+        emit errorEpg();
     } 
 }
 
@@ -443,10 +444,11 @@ void Track4ViihdeEngine::recordings(QList<Recording> recordings, bool networkErr
         emit recordingsReady();
         getEpg();
     }
-    else{
+    else{                
+        getEpg();
         mErrorMessage = tr(NETWORK_ERROR);
         qDebug("Recordings err");
-        emit error();
+        emit errorRecordings();
     } 
 }
 

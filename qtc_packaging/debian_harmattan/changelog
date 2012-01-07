@@ -1,3 +1,9 @@
+track4viihde (0.0.4) unstable; urgency=low
+
+  * Improved net timeout situations
+
+ -- Tuukka Lahtela <tuukka.lahtela@track4services.com>  Mon, 6 Jan 2012 16:35:09 +0200
+
 track4viihde (0.0.3) unstable; urgency=low
 
   * Added version to settings tab

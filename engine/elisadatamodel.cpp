@@ -43,7 +43,7 @@
 
 */
 const char* const DATE_FORMAT = "hh:mm dd.MM.yyyy";
-const char* const DATE_FORMAT_FROM = "dd.MM.yyyy hh:mm:ss";
+const char* const DATE_FORMAT_FROM = "d.M.yyyy hh:mm:ss";
 const char* const DATE_FORMAT_FROM_CUSTOM = "dd.MM.yyyy hh:mm";
 
 QString ProgramBase::id()
@@ -89,6 +89,18 @@ QString ProgramBase::toString()
         values.append(key + "=>" + mContent.value(key));        
     }
     return values.join(",");
+}
+
+QDateTime ProgramBase::parseTime(QString stringValue)
+{
+    if(stringValue == "") QDateTime();
+    QDateTime time = QDateTime::fromString(stringValue, DATE_FORMAT_FROM);
+    if(time.isValid()){
+        return time;
+    }
+    else{
+        return QDateTime::fromString(stringValue.remove(0,3),DATE_FORMAT_FROM_CUSTOM);
+    }
 }
 
 Folder::Folder()
@@ -165,14 +177,7 @@ void Recording::setStartTime(QString startTime)
 QDateTime Recording::startTime()
 {
     QString stringValue = getValue(START_TIME, "");
-    if(stringValue == "") QDateTime();
-    QDateTime time = QDateTime::fromString(stringValue, DATE_FORMAT_FROM);
-    if(time.isValid()){
-        return time;
-    }
-    else{
-        return QDateTime::fromString(stringValue.remove(0,3),DATE_FORMAT_FROM_CUSTOM);
-    }
+    return parseTime(stringValue);
 }
 
 QString Recording::startTimeAsString()
@@ -232,14 +237,7 @@ void Program::setEndTime(QString endTime)
 QDateTime Program::endTime()
 {
     QString stringValue = getValue(END_TIME, "");
-    if(stringValue == "") QDateTime();
-    QDateTime time = QDateTime::fromString(stringValue, DATE_FORMAT_FROM);
-    if(time.isValid()){
-        return time;
-    }
-    else{
-        return QDateTime::fromString(stringValue.remove(0,3),DATE_FORMAT_FROM_CUSTOM);
-    }
+    return parseTime(stringValue);
 }
 
 QString Program::endTimeAsString()
