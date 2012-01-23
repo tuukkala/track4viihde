@@ -1,3 +1,9 @@
+track4viihde (0.0.5) unstable; urgency=low
+
+  * Updated launcher icon
+
+ -- Juha Rinne <juha.rinne@track4services.com>  Mon, 23 Jan 2012 8:58:00 +0200
+
 track4viihde (0.0.4) unstable; urgency=low
 
   * Improved net timeout situations
