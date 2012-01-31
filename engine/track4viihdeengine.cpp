@@ -84,8 +84,7 @@ Track4ViihdeEngine::Track4ViihdeEngine()
 
     if(loadLoginCredentials()){
         logIn(mUserName, mPassword);
-    }
-    getChannelList();
+    }   
 }
 
 
@@ -189,8 +188,9 @@ void Track4ViihdeEngine::programDetails(const QString& programId)
 void Track4ViihdeEngine::programInfo(Program program, bool networkError)
 {
      if(!networkError){
-        mProgramDetailsModel->setProgram(program);
-        emit programDetailsReady();
+         qDebug() << program.toString();
+         mProgramDetailsModel->setProgram(program);
+         emit programDetailsReady();
      }
      else{
          mErrorMessage = tr(NETWORK_ERROR);
@@ -202,8 +202,8 @@ void Track4ViihdeEngine::programInfo(Program program, bool networkError)
 void Track4ViihdeEngine::recordPogram(const QString& programId)
 {
     qDebug() << "record " << programId;
-     BooleanReply* reply = mNetworkManager->recordProgram(programId);
-     connect(reply, SIGNAL(requestDone(bool, bool)), this, SLOT(recordReply(bool, bool)));
+    BooleanReply* reply = mNetworkManager->recordProgram(programId);
+    connect(reply, SIGNAL(requestDone(bool, bool)), this, SLOT(recordReply(bool, bool)));
 }
 
 void Track4ViihdeEngine::recordReply(bool result, bool networkError)
@@ -284,8 +284,14 @@ void Track4ViihdeEngine::folderListing(QPair<QList<Folder>, QList<Recording> > f
             mFoldersModel->setFolders(folderPair.first);
             mFoldersModel->setCurrentFolder(tr("Default"));
         }
-        mRecordedShows->setRecordings(folderPair.second);
-        emit recordedShowReady();
+        if(!folderPair.second.isEmpty()){
+            mRecordedShows->setRecordings(folderPair.second);
+            emit recordedShowReady();
+        }
+        else{
+            mErrorMessage = tr("No recordings");
+            emit errorFolders();
+        }
     }
     else{
         mErrorMessage = tr(NETWORK_ERROR);
@@ -303,6 +309,7 @@ void Track4ViihdeEngine::channelList(QStringList list, bool networkError)
 {
     if(!networkError){               
         mChannelModel->setStringList(list);
+        getRecordings();
     }
     else{
         mErrorMessage = tr(NETWORK_ERROR);
@@ -318,8 +325,7 @@ void Track4ViihdeEngine::loginDone(bool logged, bool networkError)
         mUserLogged = true;
         storeLoginDetails();
         emit userLogged();
-        getRecordings();
-        getFolderList();
+        getChannelList();
     }
     else{        
         if(networkError) {
@@ -412,6 +418,7 @@ void Track4ViihdeEngine::epgDone(QHash<QString,QList<Program> > epg, bool networ
                 fillEpgModel(mEpg.keys().first());
             }
         }
+        getFolderList();
     }
     else{        
         mErrorMessage = tr(NETWORK_ERROR);
@@ -435,21 +442,26 @@ void Track4ViihdeEngine::refreshAll()
 
 void Track4ViihdeEngine::recordings(QList<Recording> recordings, bool networkError)
 {
-    if(!networkError){
-        mRecordingModel->setRecordings(recordings);        
-        mNewRecordingIds.clear();
-        foreach(Recording rec, recordings){
-            mNewRecordingIds.append(rec.getProgramId());
+    if(!networkError){        
+        if(!recordings.isEmpty()){
+            mRecordingModel->setRecordings(recordings);
+            mNewRecordingIds.clear();
+            foreach(Recording rec, recordings){
+                mNewRecordingIds.append(rec.getProgramId());
+            }
+            emit recordingsReady();
         }
-        emit recordingsReady();
-        getEpg();
+        else{
+            mErrorMessage = tr("No future recordings");
+            emit errorRecordings();
+        }
     }
-    else{                
-        getEpg();
+    else{                        
         mErrorMessage = tr(NETWORK_ERROR);
         qDebug("Recordings err");
         emit errorRecordings();
     } 
+    getEpg();
 }
 
 void Track4ViihdeEngine::topTen(QList<Recording> recordings, bool networkError)

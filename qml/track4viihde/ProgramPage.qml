@@ -88,7 +88,7 @@ Track4Page{
             height: childrenRect.height
         }
         Label{
-            anchors.top: controlBar.bottom
+            anchors.bottom: backIcon.top
             id:errorMessage
             visible:false
         }
@@ -104,9 +104,12 @@ Track4Page{
     function reload(){        
         programBusyIndicator.visible = true
         programBusyIndicator.running = true
-        errorMessage.visible= false
+        errorMessage.visible = false
+        controlBar.visible = false
+        timeDetails.visible = false
     }
     function setDetails(){
+        controlBar.visible = true
         programBusyIndicator.visible = false
         programBusyIndicator.running = false
         name.text = "<b>"+programDetailsModel.name()+"</b>";
@@ -114,6 +117,7 @@ Track4Page{
         starTime.text = programDetailsModel.startTime()
         length.text = programDetailsModel.length()
         errorMessage.visible= false
+        timeDetails.visible = true
 
     }
 

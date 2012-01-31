@@ -160,6 +160,7 @@ NetworkReader::~NetworkReader()
     //make sure that we do not delete if something is still being processed
     mReply->deleteLater();
     mReply = 0;
+    mTimer.stop();
 }
 
 void NetworkReader::readData()
@@ -187,7 +188,7 @@ BooleanReply::BooleanReply(QNetworkReply* reply, QObject* parent)
 
 void BooleanReply::parseData(const QByteArray& data)
 {    
-    if((QString(data) == "TRUE")){
+    if(QString::compare("TRUE", QString(data), Qt::CaseInsensitive) == 0){
         emit requestDone(true, false);
     }
     else{
