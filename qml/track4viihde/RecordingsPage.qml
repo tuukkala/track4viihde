@@ -62,6 +62,7 @@ PageStack {
             delegate: itemDelegate
             cacheBuffer: 164
             flickDeceleration: 100
+            spacing: 30
         }
         Component{
             id: itemDelegate

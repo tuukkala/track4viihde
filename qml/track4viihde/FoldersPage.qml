@@ -86,33 +86,33 @@ PageStack {
         CustomMenu{
             id: folderMenu
             objectName: "folderMenu"
-            Rectangle{
-                height: 180
-                width: parent.width
-                y: titleBar.y + titleBar.height
+            anchors{
+                top: titleBar.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            Rectangle{                
+                anchors.fill: parent
                 color: TR4UI.TR4_RED
-                Rectangle{
-                    width: parent.width
-                    anchors.top: parent.top
-                    color: TR4UI.TR4_RED
-                    height: 150
-                    ListView{
-                        model: foldersModel
-                        anchors.fill: parent
-                        delegate: folderMenuDelegate
-                    }
+                ListView{
+                    model: foldersModel
+                    anchors.fill: parent
+                    delegate: folderMenuDelegate
+                    spacing: 15
                 }
             }
         }
         Component{
             id: folderMenuDelegate
             Rectangle{
-                height: 40
+                height: 80
                 width: folderMenu.width
                 color: TR4UI.TR4_RED
                 MenuLabel{
                     id: folderMenuText
                     text:   name
+                    font.pixelSize: TR4UI.FONT_GIANT
                 }
                 MenuMouseArea {
                     property string temp: id
@@ -179,6 +179,7 @@ PageStack {
             delegate: itemDelegate
             cacheBuffer: 164
             flickDeceleration: 100
+            spacing: 30
         }
         Component{
             id: itemDelegate

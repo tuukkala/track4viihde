@@ -40,6 +40,7 @@ var TR4_RED     = "#EE7C33";
 var FONT_DEFAULT = 24;
 var FONT_LSMALL  = 22;
 var FONT_SLARGE  = 26;
+var FONT_GIANT   = 48;
 var TEXT_MARGIN  = 10;
 var DIVIDER_MARGIN =  5;
 

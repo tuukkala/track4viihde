@@ -1,7 +1,6 @@
 import QtQuick 1.0
 
-Rectangle {
-    anchors.fill: parent
+Rectangle {    
     id: menuArea
     z: 25
     color: "#80000000"

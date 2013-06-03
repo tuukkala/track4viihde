@@ -47,7 +47,7 @@ const char* const EPG_URI          = "/ajaxprograminfo.sl";
 const char* const PROGRAM_INFO     = "/program.sl?programid=%1&ajax";
 const char* const FOLDERS_LIST     = "/ready.sl?folderid=%1&ajax";
 const char* const FOLDERS_LIST_POS = "/ready.sl?folderid=XXX&ppos=YYY&ajax";
-const char* const RECORD_PROGRAM   = "/program.sl?record=%1&ajax";
+const char* const RECORD_PROGRAM   = "/program.sl?record=%1&ajax&programid=%2";
 const char* const REMOVE_RECORDING = "/program.sl?remover=%1&ajax";
 const char* const REMOVE_PROGRAM   = "/program.sl?removep=%1&ajax";
 const char* const TOP_URI          = "/channels.sl?ajax";
@@ -91,7 +91,7 @@ BooleanReply* ElisaNetworkService::login(const QString& userName, const QString&
 
 BooleanReply* ElisaNetworkService::recordProgram(const QString& id)
 {
-    return new BooleanReply(makeRequest(QString(RECORD_PROGRAM).arg(id)));
+    return new BooleanReply(makeRequest(QString(RECORD_PROGRAM).arg(id).arg(id)));
 }
 BooleanReply* ElisaNetworkService::removeProgram(const QString& id)
 {

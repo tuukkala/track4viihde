@@ -113,35 +113,35 @@ PageStack {
         CustomMenu{
             id: channelMenu
             objectName: "channelMenu"
-            Rectangle{
-                height: 180
+            anchors{
+                top: titleBar.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            Rectangle{                
                 id: listContainer
-                width: parent.width
-                y: titleBar.y + titleBar.height
-                color: TR4UI.TR4_RED
-                Rectangle{
-                    width: parent.width
-                    anchors.top: parent.top
-                    color: TR4UI.TR4_RED
-                    height: 150
-                    ListView{
-                        id: channelList
-                        model: channelModel
-                        anchors.fill: parent
-                        delegate: menuDelegate
-                    }
+                anchors.fill: parent
+                color: TR4UI.TR4_RED                
+                ListView{
+                    id: channelList
+                    model: channelModel
+                    anchors.fill: parent
+                    delegate: menuDelegate
+                    spacing: 15
                 }
             }
         }
         Component{
             id: menuDelegate
             Rectangle{
-                height: 40
+                height: 80
                 width: channelMenu.width
                 color: TR4UI.TR4_RED
                 MenuLabel{
                     id: channelMenuText
                     text: display
+                    font.pixelSize: TR4UI.FONT_GIANT
                 }
                 MenuMouseArea {
                     onReleased: {
@@ -157,35 +157,36 @@ PageStack {
         CustomMenu{
             id: programDateMenu
             objectName: "programDateMenu"
+            anchors{
+                top: titleBar.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+
             Rectangle{
-                height: 180
                 id: programListContainer
-                width: parent.width
-                y: titleBar.y + titleBar.height
+                anchors.fill: parent
                 color: TR4UI.TR4_RED
-                Rectangle{
-                    width: parent.width
-                    anchors.top: parent.top
-                    color: TR4UI.TR4_RED
-                    height: 150
-                    ListView{
-                        id: programDataList
-                        model: programDateModel
-                        anchors.fill: parent
-                        delegate: dateMenuDelegate
-                    }
+                ListView{
+                    id: programDataList
+                    model: programDateModel
+                    anchors.fill: parent
+                    delegate: dateMenuDelegate
+                    spacing: 15
                 }
             }
         }
         Component{
             id: dateMenuDelegate
             Rectangle{
-                height: 40
+                height: 80
                 width: programDateMenu.width
                 color: TR4UI.TR4_RED
                 MenuLabel{
                     id:dateMenuText
                     text: display
+                    font.pixelSize: TR4UI.FONT_GIANT
                 }
                 MenuMouseArea {
                     onReleased: {
@@ -209,6 +210,7 @@ PageStack {
             delegate: itemDelegate
             cacheBuffer: 540
             flickDeceleration: 100
+            spacing: 15
         }
 
         Component {

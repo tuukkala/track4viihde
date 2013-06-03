@@ -1,3 +1,9 @@
+track4viihde (0.0.7) unstable; urgency=low
+
+  * Fixed recording, minor changes to ui
+
+ -- Tuukka Lahtela <tuukka.lahtela@track4services.com>  Mon, 3 Jun 2013 22:26:00 +0200
+
 track4viihde (0.0.6) unstable; urgency=low
 
   * Minor updates to data flow
